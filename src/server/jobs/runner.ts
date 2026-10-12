@@ -7,6 +7,7 @@ import { nextRetry } from "./backoff";
 import { PermanentJobError } from "./errors";
 import { handleFetchLead } from "./handlers/fetchLead";
 import { handleOwnerAlert } from "./handlers/ownerAlert";
+import { handleScoreLead } from "./handlers/scoreLead";
 import { handleSendEmail } from "./handlers/sendEmail";
 import { handleSendWhatsapp } from "./handlers/sendWhatsapp";
 import { handleSyncSheet } from "./handlers/syncSheet";
@@ -22,6 +23,7 @@ const HANDLERS: Record<string, (job: Job) => Promise<Outcome>> = {
   send_email: handleSendEmail,
   sync_sheet: handleSyncSheet,
   owner_alert: handleOwnerAlert,
+  score_lead: handleScoreLead,
 };
 
 /** Message-sending job types. With AUTOMATION_ENABLED=false they are not claimed and stay pending. */
