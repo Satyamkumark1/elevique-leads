@@ -104,7 +104,7 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 
 **Definition of Done**
 - [x] E2E tests TC-E-01…E-12 pass
-- [ ] Lighthouse (desktop) performance ≥ 85, accessibility ≥ 90 on Overview and Leads
+- [x] Lighthouse (desktop) performance ≥ 85, accessibility ≥ 90 on Overview and Leads (local prod build: Overview 95/100, Leads 95/96, Lead detail 100/100)
 - [x] Lead list usable on a 375 px wide screen (TC-E-12)
 - [x] Status change in dashboard updates the Sheet row (TC-I-31, Sheets mocked; live check with Phase 0)
 - [x] Dead job can be retried from Integrations page (TC-E-11)
@@ -118,7 +118,7 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - Runbook in README (how to pause automation, retry jobs, rotate tokens)
 
 **Definition of Done**
-- [ ] `docs/TEST_PLAN.md` launch checklist (§8) fully ticked
+- [ ] `docs/TEST_PLAN.md` launch checklist (§8) fully ticked — code side done; remaining items need production (see README "Production setup")
 - [ ] End-to-end test on production with a real ₹ small-budget ad and 3 team members as test leads
 - [ ] Kill switch tested on production
 - [ ] Production URL documented in README

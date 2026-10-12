@@ -26,3 +26,20 @@
 2. Update in Vercel env (Production + Preview), redeploy.
 3. Revoke old secret.
 4. Run integration "Test" buttons.
+
+## Verification (Phase 7 walkthrough, 2026-10-12)
+| Control | Status | Where |
+|---|---|---|
+| HMAC on raw body, timing-safe, both webhooks; verify tokens on GET | Done | `server/meta/verifySignature.ts`; TC-U-01…04, TC-I-01…03, I-21 |
+| Runner bearer secret, constant-time | Done | `api/jobs/run`; TC-I-09 |
+| Magic link + allowlist in proxy, server layout, route handlers and RLS | Done | `proxy.ts`, `server/session.ts`, `is_team_member()`; TC-E-01/02, TC-I-32/33 |
+| `leads` writable columns limited by DB grant | Done | init migration; `rls.test.ts` |
+| Secrets only in `src/server/**` with `server-only`; no secret `NEXT_PUBLIC_` | Done, enforced in CI | CI "Secret boundary check" |
+| Prompt injection: data-only JSON block, strict schema, one-level cap, AI never sent to leads | Done | `server/ai/aiScore.ts`; TC-U-26 |
+| CSV formula injection prefixed; Sheets written with `RAW` | Done | `lib/csv.ts`, `sheets/client.ts`; TC-I-35 |
+| Idempotency keys, `SKIP LOCKED`, per-job message guard, Resend idempotency key, kill switch, opt-out | Done | TC-I-05, I-16, I-25, runner tests |
+| No PII in logs/Sentry: logger drops PII fields + redacts; Sentry collects no request data and is scrubbed | Done | `server/lib/scrub.ts`; `scrub.test.ts` |
+| Security headers (no framing, nosniff, HSTS, referrer policy) | Done | `next.config.ts` |
+| Token expiry visible | Done | Integrations: failures + Test buttons |
+| Anonymous access to API routes | 401 | TC-I-32 (E2E) |
+| Webhook payloads with PII | WhatsApp events store counts only; Meta events store IDs only | routes |

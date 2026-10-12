@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Phase 7 — Hardening (code complete; launch steps need production)
+- Sentry (server, only when `SENTRY_DSN` set): no request/user data collected, `beforeSend` scrubbing, dead jobs and runner failures reported with IDs only
+- Logger drops PII-named fields and redacts emails/phones (never IDs); unit tests
+- Security headers; CI guard that secret-reading modules import `server-only`
+- WCAG fixes from Lighthouse: text-on-tint colour variants for cold/error, labelled icons, 24px targets
+- README: production setup, runbook; SECURITY.md verification table
+
 ### Phase 6 — Dashboard
 - Overview: 4 stat cards, leads/day line, leads by campaign, score split, needs-attention list, activity feed
 - Leads: URL filters (score, status, category, campaign, IST date range), search, 25/page, WhatsApp/email delivery icons, bulk status, CSV export (formula-safe), mobile card list

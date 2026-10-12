@@ -33,3 +33,5 @@
 | 2026-10-12 | "Needs your attention" = leads still in `replied` status | Team replies happen in the WhatsApp app, outside the system; moving the status is the "handled" signal |
 | 2026-10-12 | WhatsApp template approval status not fetched (no WABA ID in env); Templates page links to WhatsApp Manager | Rejected templates surface as dead jobs on Integrations |
 | 2026-10-12 | Owner alert number stays an env var (read-only in Settings) | One source; changing it is rare and should be deliberate |
+| 2026-10-12 | Badge/alert text uses `--cold-fg` / `--error-fg` (token mixed toward `--text`); fills keep the exact tokens | UI_SPEC cold/error tokens are 4.25 and 3.81:1 as small text on their tints; UI_SPEC also requires WCAG AA |
+| 2026-10-12 | Sentry server-side only (no client SDK) | Errors that matter are in webhooks/jobs; keeps PII-free guarantees simple |
