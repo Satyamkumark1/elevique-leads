@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getEnv } from "@/server/env";
 import { runJobs } from "@/server/jobs/runner";
-import { logger } from "@/server/lib/logger";
+import { logger, reportError } from "@/server/lib/logger";
 import { safeEqual } from "@/server/meta/verifySignature";
 
 export const maxDuration = 60;
@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
     logger.info("runner.done", result);
     return NextResponse.json({ ok: true, ...result });
   } catch (err) {
+    reportError(err, {});
     logger.error("runner.failed", { error: err instanceof Error ? err.message : "unknown" });
     return NextResponse.json({ ok: false, error: "runner failed" }, { status: 500 });
   }

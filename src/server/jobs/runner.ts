@@ -2,7 +2,7 @@ import "server-only";
 import type { Tables } from "@/lib/database.types";
 import { db } from "../db";
 import { getEnv } from "../env";
-import { logger } from "../lib/logger";
+import { logger, reportError } from "../lib/logger";
 import { nextRetry } from "./backoff";
 import { PermanentJobError } from "./errors";
 import { handleFetchLead } from "./handlers/fetchLead";
@@ -88,6 +88,7 @@ async function runOne(job: Job) {
       status: next.status,
     });
     if (next.status === "dead") {
+      reportError(err, { lead_id: job.lead_id, job_id: job.id, type: job.type });
       await client.from("events").insert({
         lead_id: job.lead_id,
         type: "job.dead",
