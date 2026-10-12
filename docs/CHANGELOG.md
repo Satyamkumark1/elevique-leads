@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Phase 3 — Job runner + instant response
+- `POST /api/jobs/run` (Bearer `CRON_SECRET`, 50 s budget); pg_cron every 5 min via Vault secrets `app_url`, `cron_secret`
+- Handlers: `send_whatsapp` (welcome template, category reel), `send_email` (Resend, idempotency key), `sync_sheet` (append/update by lead ID), `owner_alert`
+- Skip rules: invalid phone / no email / opted out / paused → logged `message.skipped`, job done (FR-12)
+- Kill switch holds outbound jobs pending; retries with backoff; permanent 4xx → dead
+- Tests: TC-I-09…20, TC-U-33; shared MSW provider mocks
+
 ### Phase 2 — Lead capture
 - `/api/webhooks/meta` GET (verify token) + POST (raw-body HMAC → store event → enqueue `fetch_lead` → 200; `after()` kicks the runner) (FR-01…03, FR-09)
 - `fetch_lead` job: Graph fetch (version from env, Bearer token), field mapping, phone normalisation, budget parsing, rule score, idempotent upsert, duplicate-phone detection, sequence enqueue (FR-04…08, FR-18)

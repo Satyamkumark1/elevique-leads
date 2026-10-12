@@ -14,7 +14,7 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 | 0.2 | Meta developer app (type: Business) with Webhooks + WhatsApp products; Facebook Page connected | App ID + app secret saved |
 | 0.3 | Long-lived Page access token with `leads_retrieval`, `pages_manage_metadata`, `pages_show_list`, `pages_read_engagement`, `ads_management` | Token works in Graph API Explorer: `GET /{page_id}/leadgen_forms` |
 | 0.4 | WhatsApp Cloud API number registered; permanent system-user token created | Test template sends to your own phone |
-| 0.5 | Submit WhatsApp templates: `welcome_samples`, `followup_case_study`, `followup_free_sample`, `internal_hot_lead` | All "Approved" |
+| 0.5 | Submit WhatsApp templates (exact text + variables in `src/server/whatsapp/templates.ts`): `welcome_samples`, `followup_case_study`, `followup_free_sample`, `internal_hot_lead`, `internal_lead_replied` | All "Approved" |
 | 0.6 | Meta Instant Form created with field keys from PRD §8 + privacy policy link | Form visible in Ads Manager |
 | 0.7 | Resend: add `send.elevique.in`, DNS records (SPF, DKIM, DMARC) added | Domain "Verified" in Resend |
 | 0.8 | Google Cloud: service account + JSON key; Sheet created with header row; Sheet shared with service account email | Service account has Editor access |
@@ -65,12 +65,12 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - `AUTOMATION_ENABLED` kill switch
 
 **Definition of Done**
-- [ ] Integration tests TC-I-09…I-20 pass (providers mocked with MSW)
-- [ ] Test lead → WhatsApp template received on your own phone in < 30 s
-- [ ] Test lead → email received in Gmail **inbox** (not spam), from `send.elevique.in`
-- [ ] Test lead → row appears in the Google Sheet
-- [ ] Forced provider failure → job retries 3 times then shows `dead`
-- [ ] Two runner calls at the same time never send the same message twice
+- [x] Integration tests TC-I-09…I-20 pass (providers mocked with MSW)
+- [ ] Test lead → WhatsApp template received on your own phone in < 30 s — needs Phase 0
+- [ ] Test lead → email received in Gmail **inbox** (not spam), from `send.elevique.in` — needs Phase 0
+- [ ] Test lead → row appears in the Google Sheet — needs Phase 0
+- [x] Forced provider failure → job retries 3 times then shows `dead` (TC-I-13, I-14)
+- [x] Two runner calls at the same time never send the same message twice (TC-I-16)
 
 ## Phase 4 — AI scoring + alerts (Day 8)
 
