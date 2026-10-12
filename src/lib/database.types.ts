@@ -252,6 +252,7 @@ export type Database = {
           direction: Database["public"]["Enums"]["msg_direction"]
           error: string | null
           id: string
+          job_id: string | null
           lead_id: string
           provider_message_id: string | null
           status: Database["public"]["Enums"]["msg_status"]
@@ -265,6 +266,7 @@ export type Database = {
           direction: Database["public"]["Enums"]["msg_direction"]
           error?: string | null
           id?: string
+          job_id?: string | null
           lead_id: string
           provider_message_id?: string | null
           status?: Database["public"]["Enums"]["msg_status"]
@@ -278,6 +280,7 @@ export type Database = {
           direction?: Database["public"]["Enums"]["msg_direction"]
           error?: string | null
           id?: string
+          job_id?: string | null
           lead_id?: string
           provider_message_id?: string | null
           status?: Database["public"]["Enums"]["msg_status"]
@@ -285,6 +288,13 @@ export type Database = {
           updated_at?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "messages_job_id_fkey"
+            columns: ["job_id"]
+            isOneToOne: false
+            referencedRelation: "jobs"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "messages_lead_id_fkey"
             columns: ["lead_id"]

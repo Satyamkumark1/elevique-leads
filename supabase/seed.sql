@@ -2,6 +2,16 @@
 
 update settings set value = '["you@elevique.in", "team@elevique.test"]' where key = 'allowed_emails';
 
+update settings set value = '{
+  "showreel_url": "https://elevique.in/showreel",
+  "starting_price_line": "Dev seed: replace with your real starting price line.",
+  "case_studies": [
+    {"title": "Dev case study 1", "url": "https://elevique.in/work/1"},
+    {"title": "Dev case study 2", "url": "https://elevique.in/work/2"},
+    {"title": "Dev case study 3", "url": "https://elevique.in/work/3"}
+  ]
+}' where key = 'email_content';
+
 insert into sample_reels (category, title, url, sort) values
   ('Fashion',                'Fashion reel',      'https://elevique.in/samples/fashion',  0),
   ('Beauty & personal care', 'Beauty reel',       'https://elevique.in/samples/beauty',   0),
