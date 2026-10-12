@@ -23,6 +23,7 @@ const schema = z.object({
   WHATSAPP_APP_SECRET: required,
   WHATSAPP_VERIFY_TOKEN: required,
   OWNER_ALERT_PHONE: z.string().regex(/^\+91[6-9]\d{9}$/),
+  WHATSAPP_TEMPLATE_LANG: z.string().default("en"), // language code the templates were approved in
 
   RESEND_API_KEY: required,
   RESEND_WEBHOOK_SECRET: z.string().optional(), // v1.1
