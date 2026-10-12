@@ -25,3 +25,6 @@
 | 2026-10-12 | 5th WhatsApp template `internal_lead_replied` for reply alerts to the owner | `internal_hot_lead` text says "hot lead"; owner alerts outside the 24h window need an approved template |
 | 2026-10-12 | Email copy (showreel, price line, case studies) lives in `settings.email_content`; empty → `send_email` jobs go dead | Never send invented prices or placeholders to real leads |
 | 2026-10-12 | `messages.job_id` (unique) guards against resending on retry; Resend gets `Idempotency-Key` = job key | Idempotency per side effect (CLAUDE.md) |
+| 2026-10-12 | Inbound replies/opt-outs apply to every lead with that phone (originals and duplicates) | "Never message again" must hold even if the reply matches the duplicate row |
+| 2026-10-12 | Reply alerts: at most one per lead per IST day (`owner_alert:reply:<lead>:<date>`) | A chatty lead shouldn't flood the owner; the dashboard "Needs attention" list covers the rest |
+| 2026-10-12 | WhatsApp webhook events store counts only, not the raw payload | Raw payload holds phone numbers and message text; message text already lives in `messages` |

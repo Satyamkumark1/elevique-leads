@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Phase 5 — Replies, opt-out, follow-ups
+- `/api/webhooks/whatsapp`: signature check; statuses only move forward (`failed` records the error); inbound → message row, lead `replied`, follow-ups cancelled, one owner alert per lead per day
+- Opt-out (STOP, unsubscribe, band karo, not interested, exact "no") → `opted_out` on every lead with that phone, all pending outbound jobs cancelled
+- `followup` handler: cancels if replied / moved past contacted / paused / opted out; quiet hours 21:00–09:00 IST reschedule without using an attempt
+- Tests TC-U-29…32, TC-I-21…30
+
 ### Phase 4 — AI scoring
 - `aiScore` (Groq JSON mode, Zod-validated, 10 s timeout, form answers only, one-level cap); `score_lead` handler stores summary + reason (`leads.ai_reason`), queues owner alert when newly hot and a Sheet update when the score changes
 - AI failure never fails the job or blocks messages (FR-20)

@@ -92,11 +92,11 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - Opt-out handling
 
 **Definition of Done**
-- [ ] Integration tests TC-I-21…I-32 pass
-- [ ] Reply from your phone → lead `replied`, follow-ups `cancelled`, owner alerted
-- [ ] "STOP" → `opted_out`, no further messages
-- [ ] Message statuses update to delivered/read in the DB
-- [ ] Follow-up due at 22:00 IST is sent at 09:00 IST (unit test with fake clock)
+- [x] Integration tests TC-I-21…I-32 pass (I-31/32 delivered with the PATCH route in Phase 6)
+- [ ] Reply from your phone → lead `replied`, follow-ups `cancelled`, owner alerted — needs Phase 0 (TC-I-24 green)
+- [ ] "STOP" → `opted_out`, no further messages — needs Phase 0 (TC-I-25 green)
+- [x] Message statuses update to delivered/read in the DB (TC-I-22, I-23; live check with Phase 0)
+- [x] Follow-up due at 22:00 IST is sent at 09:00 IST (unit test with fake clock)
 
 ## Phase 6 — Dashboard (Day 11–14)
 
