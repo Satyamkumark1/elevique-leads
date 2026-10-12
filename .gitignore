@@ -48,3 +48,6 @@ supabase/.temp
 # playwright
 /test-results/
 /playwright-report/
+
+# playwright auth state
+tests/e2e/.auth/

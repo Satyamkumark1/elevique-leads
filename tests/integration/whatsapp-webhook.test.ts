@@ -50,15 +50,13 @@ const inbound = (fromE164: string, text: string, id = wamid()) =>
 
 async function outboundMessage(leadId: string) {
   const id = wamid();
-  await db()
-    .from("messages")
-    .insert({
-      lead_id: leadId,
-      channel: "whatsapp",
-      direction: "out",
-      provider_message_id: id,
-      status: "sent",
-    });
+  await db().from("messages").insert({
+    lead_id: leadId,
+    channel: "whatsapp",
+    direction: "out",
+    provider_message_id: id,
+    status: "sent",
+  });
   return id;
 }
 const messageStatus = async (id: string) =>
