@@ -1,13 +1,13 @@
 import { createHmac } from "node:crypto";
-import { http, HttpResponse } from "msw";
-import { setupServer } from "msw/node";
+import { HttpResponse } from "msw";
 import { NextRequest } from "next/server";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { GET, POST } from "@/app/api/webhooks/meta/route";
 import { db } from "@/server/db";
 import { runJobs } from "@/server/jobs/runner";
 import graphLeadFixture from "../fixtures/meta/graph-lead.json";
 import webhookFixture from "../fixtures/meta/leadgen-webhook.json";
+import { providers, mockProviders } from "../support/providers";
 
 vi.mock("next/server", async (importOriginal) => ({
   ...(await importOriginal<typeof import("next/server")>()),
@@ -19,15 +19,8 @@ let seq = 0;
 const newLeadgenId = () => `${RUN}_${++seq}`;
 const randomPhone = () => `7${String(Math.floor(Math.random() * 1e9)).padStart(9, "0")}`;
 
-// Graph responses keyed by leadgen_id; unknown ids → 404 (dead job, never a real call).
-const graph = new Map<string, () => Response>();
-const server = setupServer(
-  http.get("https://graph.facebook.com/:version/:id", ({ params, request }) => {
-    expect(params.version).toBe(process.env.META_GRAPH_VERSION);
-    expect(request.headers.get("authorization")).toBe(`Bearer ${process.env.META_PAGE_ACCESS_TOKEN}`);
-    return graph.get(String(params.id))?.() ?? HttpResponse.json({ error: { code: 100 } }, { status: 404 });
-  }),
-);
+const graph = providers.graphLeads;
+mockProviders();
 
 function graphLead(id: string, fields: Record<string, string> = {}) {
   const field_data = graphLeadFixture.field_data.map((f) =>
@@ -74,24 +67,10 @@ async function countWebhookEvents() {
   return count!;
 }
 
-beforeAll(() =>
-  server.listen({
-    // Local Supabase passes through; any other real network call fails the test.
-    onUnhandledFrame: ({ frame, defaults }) => {
-      const { request } = frame.data as { request?: Request };
-      if (request && !["127.0.0.1", "localhost"].includes(new URL(request.url).hostname)) defaults.error();
-    },
-  }),
-);
 beforeEach(() => {
   process.env.AUTOMATION_ENABLED = "true";
 });
-afterEach(() => {
-  graph.clear();
-  server.resetHandlers();
-});
 afterAll(async () => {
-  server.close();
   await db().from("leads").delete().like("leadgen_id", `${RUN}%`);
   await db().from("jobs").delete().like("idempotency_key", `fetch_lead:${RUN}%`);
 });

@@ -12,5 +12,7 @@ export default defineConfig({
     include: ["tests/unit/**/*.test.ts", "tests/integration/**/*.test.ts"],
     environment: "node",
     setupFiles: ["tests/support/setup.ts"],
+    // Integration files share one DB and job queue: a runner in one file must not claim another file's jobs.
+    fileParallelism: false,
   },
 });
