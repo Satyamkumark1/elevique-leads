@@ -79,10 +79,10 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - `score_lead` handler, hot alert on upgrade
 
 **Definition of Done**
-- [ ] Unit tests TC-U-21…U-28 pass (Groq mocked)
-- [ ] AI eval set (TEST_PLAN §6) ≥ 90% agreement with expected scores
-- [ ] Groq timeout → lead keeps rule score, `ai_status = failed`, messages still sent
-- [ ] Hot test lead → owner alert received on WhatsApp
+- [x] Unit tests TC-U-21…U-28 pass (Groq mocked)
+- [ ] AI eval set (TEST_PLAN §6) ≥ 90% agreement with expected scores — set ready (31 cases); run `pnpm test:ai-eval` with a real GROQ_API_KEY
+- [x] Groq timeout → lead keeps rule score, `ai_status = failed`, messages still sent (TC-U-24 + score-lead integration test)
+- [ ] Hot test lead → owner alert received on WhatsApp — needs Phase 0 (sending verified with mocks)
 
 ## Phase 5 — Replies, opt-out, follow-ups (Day 9–10)
 

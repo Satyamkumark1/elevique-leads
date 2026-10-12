@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Phase 4 — AI scoring
+- `aiScore` (Groq JSON mode, Zod-validated, 10 s timeout, form answers only, one-level cap); `score_lead` handler stores summary + reason (`leads.ai_reason`), queues owner alert when newly hot and a Sheet update when the score changes
+- AI failure never fails the job or blocks messages (FR-20)
+- Tests TC-U-21…28; 31-case labelled eval set (`tests/fixtures/ai-eval.json`) + `pnpm test:ai-eval`
+
 ### Phase 3 — Job runner + instant response
 - `POST /api/jobs/run` (Bearer `CRON_SECRET`, 50 s budget); pg_cron every 5 min via Vault secrets `app_url`, `cron_secret`
 - Handlers: `send_whatsapp` (welcome template, category reel), `send_email` (Resend, idempotency key), `sync_sheet` (append/update by lead ID), `owner_alert`
