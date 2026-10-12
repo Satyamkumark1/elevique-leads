@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import { z } from "zod";
 import { ScoreBadge } from "@/components/badges";
 import { formatIST } from "@/lib/time";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { getEnv } from "@/server/env";
 import { LeadActions, LeadControls, LeadNotes } from "./lead-controls";
 import { Timeline, type TimelineItem } from "./timeline";
@@ -11,7 +11,7 @@ import { Timeline, type TimelineItem } from "./timeline";
 export default async function LeadDetailPage({ params }: PageProps<"/leads/[id]">) {
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
-  const supabase = await createSupabaseServer();
+  const supabase = db();
 
   const { data: lead } = await supabase.from("leads").select("*").eq("id", id).maybeSingle();
   if (!lead) notFound();

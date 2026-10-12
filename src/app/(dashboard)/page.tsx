@@ -4,11 +4,11 @@ import { EmptyState } from "@/components/empty-state";
 import { Time } from "@/components/time";
 import { SCORE_LABEL, SCORES } from "@/lib/labels";
 import { formatDuration, overviewStats } from "@/lib/stats";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { LeadsByCampaign, LeadsPerDay } from "./overview-charts";
 
 export default async function OverviewPage() {
-  const supabase = await createSupabaseServer();
+  const supabase = db();
   const now = new Date();
   const since = new Date(now.getTime() - 30 * 86_400_000).toISOString();
 

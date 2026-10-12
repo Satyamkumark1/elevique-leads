@@ -2,7 +2,7 @@ import Link from "next/link";
 import { JobButton } from "@/components/job-button";
 import { Time } from "@/components/time";
 import { formatIST } from "@/lib/time";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { getEnv } from "@/server/env";
 import { TestButton } from "./test-button";
 
@@ -16,7 +16,7 @@ const CARDS = [
 
 export default async function IntegrationsPage({ searchParams }: PageProps<"/integrations">) {
   const tab = (await searchParams).tab === "dead" ? "dead" : "pending";
-  const supabase = await createSupabaseServer();
+  const supabase = db();
   const now = new Date();
   const dayAgo = new Date(now.getTime() - 86_400_000).toISOString();
   const latest = <T,>(p: PromiseLike<{ data: T[] | null }>) =>

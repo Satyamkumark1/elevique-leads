@@ -1,4 +1,4 @@
-import { NextResponse, NextRequest } from "next/server";
+import { NextRequest } from "next/server";
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { POST as cancel } from "@/app/api/jobs/[id]/cancel/route";
 import { POST as retry } from "@/app/api/jobs/[id]/retry/route";
@@ -15,10 +15,6 @@ import {
   providers,
 } from "../support/providers";
 
-// Route handlers read the session from cookies(); here the team check is stubbed.
-// The real 401 for anonymous requests is covered over HTTP in tests/e2e (TC-I-32).
-const session = vi.hoisted(() => ({ result: { email: "team@elevique.test" } as object }));
-vi.mock("@/server/session", () => ({ requireTeam: async () => session.result }));
 vi.mock("next/server", async (importOriginal) => ({
   ...(await importOriginal<typeof import("next/server")>()),
   after: vi.fn(),
@@ -27,7 +23,6 @@ vi.mock("next/server", async (importOriginal) => ({
 mockProviders();
 beforeEach(() => {
   process.env.AUTOMATION_ENABLED = "true";
-  session.result = { email: "team@elevique.test" };
 });
 afterAll(cleanupTestLeads);
 
@@ -54,13 +49,6 @@ describe("PATCH /api/leads/[id]", () => {
     await runJobs();
     const row = providers.sheet.find((r) => r[0] === lead.id)!;
     expect(row[10]).toBe("meeting_booked");
-  });
-
-  it("TC-I-32: unauthorised → the guard's response is returned and nothing changes", async () => {
-    const lead = await createLead({ status: "contacted" });
-    session.result = { response: NextResponse.json({ ok: false }, { status: 403 }) };
-    expect((await patch(lead.id, { status: "won" })).status).toBe(403);
-    expect((await leadRow(lead.id))!.status).toBe("contacted");
   });
 
   it("rejects fields other than status/notes/automation_paused", async () => {

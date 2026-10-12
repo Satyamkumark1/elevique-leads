@@ -71,12 +71,13 @@ test("TC-E-07: change status to Meeting booked", async ({ page }) => {
   await expect(
     page.getByRole("status").filter({ hasText: "Status changed to Meeting booked" }),
   ).toBeVisible();
-  await expect(page.getByText(/Status Contacted → Meeting booked/)).toBeVisible();
+  await expect(page.getByText(/Status Contacted → Meeting booked/).last()).toBeVisible();
   await expect(page.getByLabel("Status")).toHaveValue("meeting_booked");
 });
 
 test("TC-E-08: note persists after reload", async ({ page }) => {
   const lead = await seedLead("test_4");
+  await admin.from("leads").update({ notes: null }).eq("id", lead.id);
   const note = `Call on Tuesday ${Date.now()}`;
   await page.goto(`/leads/${lead.id}`);
   await page.getByRole("textbox", { name: "Notes" }).fill(note);
@@ -155,16 +156,14 @@ test("TC-E-12: 375 px wide — leads list and detail have no horizontal scroll",
   expect(await noHorizontalScroll()).toBe(true);
 });
 
-test("TC-I-32: API routes reject anonymous requests with 401", async () => {
+test("dashboard and its API are available without authentication", async () => {
   const anon = await request.newContext({
     baseURL: "http://localhost:3000",
     storageState: { cookies: [], origins: [] }, // no session
   });
   const lead = await seedLead("test_5");
-  expect((await anon.patch(`/api/leads/${lead.id}`, { data: { status: "won" } })).status()).toBe(401);
-  expect((await anon.get("/api/leads/export")).status()).toBe(401);
-  expect((await anon.post(`/api/jobs/${lead.id}/retry`)).status()).toBe(401);
-  expect((await anon.post("/api/integrations/test", { data: { integration: "groq" } })).status()).toBe(401);
+  expect((await anon.patch(`/api/leads/${lead.id}`, { data: { notes: "Public dashboard note" } })).status()).toBe(200);
+  expect((await anon.get("/api/leads/export")).status()).toBe(200);
   await anon.dispose();
 });
 

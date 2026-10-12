@@ -1,15 +1,13 @@
-import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
 import { Toaster } from "@/components/toaster";
 import { TopBar } from "@/components/top-bar";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
+
+// Dashboard data must be read on every request, not captured during `next build`.
+export const dynamic = "force-dynamic";
 
 export default async function DashboardLayout({ children }: LayoutProps<"/">) {
-  const supabase = await createSupabaseServer();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) redirect("/login"); // proxy already gates; this is the server-side check
+  const supabase = db();
 
   const { data: lastWebhook } = await supabase
     .from("events")
@@ -23,7 +21,7 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
     <div className="flex min-h-dvh">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col">
-        <TopBar email={user.email ?? ""} lastWebhookAt={lastWebhook?.created_at ?? null} />
+        <TopBar lastWebhookAt={lastWebhook?.created_at ?? null} />
         <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 pb-24 md:p-6">{children}</main>
       </div>
       <Toaster />

@@ -1,6 +1,6 @@
 import type { NextConfig } from "next";
 
-// cacheComponents is off: every page is per-user and behind auth (see docs/DECISIONS.md).
+  // cacheComponents is off; the dashboard layout opts into request-time rendering.
 const nextConfig: NextConfig = {
   turbopack: {
     rules: {

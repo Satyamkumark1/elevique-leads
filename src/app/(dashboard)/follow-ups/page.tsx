@@ -3,11 +3,11 @@ import { ArrowRight } from "lucide-react";
 import { EmptyState } from "@/components/empty-state";
 import { JobButton } from "@/components/job-button";
 import { formatIST } from "@/lib/time";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { getSetting } from "@/server/settings";
 
 export default async function FollowUpsPage() {
-  const supabase = await createSupabaseServer();
+  const supabase = db();
   const [steps, { data: jobs }] = await Promise.all([
     getSetting("followup_steps"),
     supabase

@@ -5,7 +5,6 @@ import { db } from "@/server/db";
 import { enqueue } from "@/server/jobs/enqueue";
 import { logEvent } from "@/server/leads";
 import { logger } from "@/server/lib/logger";
-import { requireTeam } from "@/server/session";
 
 const patchSchema = z
   .object({
@@ -18,8 +17,6 @@ const patchSchema = z
 
 /** FR-26, FR-31: team edits status / notes / automation pause; Sheet row follows (FR-17). */
 export async function PATCH(request: NextRequest, { params }: RouteContext<"/api/leads/[id]">) {
-  const auth = await requireTeam();
-  if ("response" in auth) return auth.response;
   const { id } = await params;
   if (!z.uuid().safeParse(id).success)
     return NextResponse.json({ ok: false, error: "bad id" }, { status: 400 });
@@ -46,10 +43,10 @@ export async function PATCH(request: NextRequest, { params }: RouteContext<"/api
     await logEvent(
       id,
       "status.changed",
-      `Status ${STATUS_LABEL[before.status]} → ${STATUS_LABEL[status]} by ${auth.email}`,
+      `Status ${STATUS_LABEL[before.status]} → ${STATUS_LABEL[status]} from dashboard`,
     );
   }
-  if (notes !== undefined) await logEvent(id, "note.updated", `Notes edited by ${auth.email}`);
+  if (notes !== undefined) await logEvent(id, "note.updated", "Notes edited from dashboard");
   if (automation_paused !== undefined && automation_paused !== before.automation_paused) {
     if (automation_paused) {
       await client
@@ -71,7 +68,7 @@ export async function PATCH(request: NextRequest, { params }: RouteContext<"/api
     await logEvent(
       id,
       "automation.toggled",
-      `Automation ${automation_paused ? "paused" : "resumed"} by ${auth.email}`,
+      `Automation ${automation_paused ? "paused" : "resumed"} from dashboard`,
     );
   }
   if (status !== undefined) {
@@ -89,8 +86,6 @@ export async function PATCH(request: NextRequest, { params }: RouteContext<"/api
 
 /** DPDP deletion request: removes the lead, its messages and jobs (cascade). Sheet row clearing is v1.1. */
 export async function DELETE(_request: NextRequest, { params }: RouteContext<"/api/leads/[id]">) {
-  const auth = await requireTeam();
-  if ("response" in auth) return auth.response;
   const { id } = await params;
   if (!z.uuid().safeParse(id).success)
     return NextResponse.json({ ok: false, error: "bad id" }, { status: 400 });
@@ -98,6 +93,6 @@ export async function DELETE(_request: NextRequest, { params }: RouteContext<"/a
   const { data, error } = await db().from("leads").delete().eq("id", id).select("id");
   if (error) return NextResponse.json({ ok: false, error: "delete failed" }, { status: 500 });
   if (!data.length) return NextResponse.json({ ok: false, error: "not found" }, { status: 404 });
-  await logEvent(null, "lead.deleted", `Lead ${id} deleted by ${auth.email}`);
+  await logEvent(null, "lead.deleted", `Lead ${id} deleted from dashboard`);
   return NextResponse.json({ ok: true });
 }

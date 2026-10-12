@@ -4,7 +4,6 @@ import { istDay } from "@/lib/stats";
 import { formatIST } from "@/lib/time";
 import { db } from "@/server/db";
 import { leadsQuery, parseLeadFilters } from "@/server/leadsQuery";
-import { requireTeam } from "@/server/session";
 
 const HEADER = [
   "Lead ID",
@@ -27,8 +26,6 @@ const HEADER = [
 
 /** FR-30: CSV of the filtered leads (same filters as the Leads page, or `ids` for a bulk selection). */
 export async function GET(request: NextRequest) {
-  const auth = await requireTeam();
-  if ("response" in auth) return auth.response;
 
   const filters = parseLeadFilters(request.nextUrl.searchParams);
   const { data, error } = await leadsQuery(db(), filters).limit(10_000);

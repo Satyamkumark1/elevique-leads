@@ -1,12 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { LogOut, Search } from "lucide-react";
-import { signOut } from "@/app/actions";
+import { Search } from "lucide-react";
 import { formatIST } from "@/lib/time";
 import { pageTitle } from "./nav";
 
-export function TopBar({ email, lastWebhookAt }: { email: string; lastWebhookAt: string | null }) {
+export function TopBar({ lastWebhookAt }: { lastWebhookAt: string | null }) {
   const pathname = usePathname();
   // eslint-disable-next-line react-hooks/purity -- render-time "now" is fine for a 24h freshness dot
   const live = lastWebhookAt !== null && Date.now() - new Date(lastWebhookAt).getTime() < 24 * 3600 * 1000;
@@ -38,18 +37,6 @@ export function TopBar({ email, lastWebhookAt }: { email: string; lastWebhookAt:
         {live ? "Live" : "Idle"}
       </span>
 
-      <div className="flex items-center gap-2">
-        <span className="hidden text-xs text-text-muted lg:inline">{email}</span>
-        <form action={signOut}>
-          <button
-            type="submit"
-            aria-label="Sign out"
-            className="rounded-md p-2 text-text-muted hover:bg-surface-2 hover:text-text"
-          >
-            <LogOut size={16} aria-hidden />
-          </button>
-        </form>
-      </div>
     </header>
   );
 }

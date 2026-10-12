@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUp, Trash2 } from "lucide-react";
 import { CATEGORIES } from "@/lib/labels";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { welcomeEmail } from "@/server/email/welcome";
 import { getEnv } from "@/server/env";
 import { getSetting } from "@/server/settings";
@@ -11,7 +11,7 @@ const input = "h-9 w-full rounded-md border bg-surface-2 px-3 text-[13px]";
 const button = "h-9 rounded-md border bg-surface-2 px-3 text-[13px] font-medium hover:border-text-muted";
 
 export default async function TemplatesPage() {
-  const supabase = await createSupabaseServer();
+  const supabase = db();
   const [content, { data: reels }] = await Promise.all([
     getSetting("email_content"),
     supabase.from("sample_reels").select("*").order("category").order("sort"),

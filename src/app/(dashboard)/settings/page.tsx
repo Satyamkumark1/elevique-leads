@@ -1,21 +1,16 @@
 import { BUDGETS, TIMELINES } from "@/lib/labels";
-import { createSupabaseServer } from "@/lib/supabase/server";
 import { getEnv } from "@/server/env";
 import { getSetting } from "@/server/settings";
-import { addTeamEmail, removeTeamEmail, saveQuietHours, saveScoring } from "./actions";
+import { saveQuietHours, saveScoring } from "./actions";
 
 const input = "h-9 rounded-md border bg-surface-2 px-3 text-[13px]";
 const button = "h-9 rounded-md border bg-surface-2 px-3 text-[13px] font-medium hover:border-text-muted";
 
 export default async function SettingsPage() {
-  const supabase = await createSupabaseServer();
-  const [rules, quiet, team, { data: auth }] = await Promise.all([
+  const [rules, quiet] = await Promise.all([
     getSetting("scoring_rules"),
     getSetting("quiet_hours"),
-    getSetting("allowed_emails"),
-    supabase.auth.getUser(),
   ]);
-  const me = auth.user?.email?.toLowerCase();
 
   return (
     <div className="grid gap-6 lg:grid-cols-2">
@@ -100,48 +95,6 @@ export default async function SettingsPage() {
         </form>
       </section>
 
-      <section aria-labelledby="team" className="rounded-xl border bg-surface p-5">
-        <h2 id="team" className="font-serif text-2xl">
-          Team
-        </h2>
-        <p className="mt-1 text-text-muted">Only these emails can sign in.</p>
-        <ul className="mt-4 divide-y">
-          {team.map((email) => (
-            <li key={email} className="flex items-center justify-between gap-3 py-2">
-              <span className="break-all">{email}</span>
-              {email.toLowerCase() === me ? (
-                <span className="text-xs text-text-muted">You</span>
-              ) : (
-                <form action={removeTeamEmail}>
-                  <input type="hidden" name="email" value={email} />
-                  <button
-                    type="submit"
-                    aria-label={`Remove ${email}`}
-                    className="text-xs text-error-fg hover:underline"
-                  >
-                    Remove
-                  </button>
-                </form>
-              )}
-            </li>
-          ))}
-        </ul>
-        <form action={addTeamEmail} className="mt-4 flex gap-2">
-          <label className="flex-1">
-            <span className="sr-only">Email to add</span>
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="name@elevique.in"
-              className={`${input} w-full`}
-            />
-          </label>
-          <button type="submit" className={button}>
-            Add
-          </button>
-        </form>
-      </section>
     </div>
   );
 }

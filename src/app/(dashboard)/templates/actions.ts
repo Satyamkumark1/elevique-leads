@@ -4,7 +4,6 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { CATEGORIES } from "@/lib/labels";
 import { db } from "@/server/db";
-import { assertTeam } from "@/server/session";
 
 const url = z
   .url()
@@ -12,7 +11,6 @@ const url = z
   .refine((u) => /^https?:\/\//.test(u), "http(s) only");
 
 export async function addReel(formData: FormData) {
-  await assertTeam();
   const data = z
     .object({ category: z.enum(CATEGORIES), title: z.string().trim().max(120), url })
     .parse(Object.fromEntries(formData));
@@ -27,7 +25,6 @@ export async function addReel(formData: FormData) {
 }
 
 export async function deleteReel(formData: FormData) {
-  await assertTeam();
   const id = z.uuid().parse(formData.get("id"));
   await db().from("sample_reels").delete().eq("id", id);
   revalidatePath("/templates");
@@ -35,7 +32,6 @@ export async function deleteReel(formData: FormData) {
 
 /** Swap a reel with its neighbour in the same category. */
 export async function moveReel(formData: FormData) {
-  await assertTeam();
   const { id, dir } = z
     .object({ id: z.uuid(), dir: z.enum(["up", "down"]) })
     .parse(Object.fromEntries(formData));
@@ -59,7 +55,6 @@ export async function moveReel(formData: FormData) {
 
 /** Case studies: one per line, "Title | https://url". */
 export async function saveEmailContent(formData: FormData) {
-  await assertTeam();
   const raw = z
     .object({
       showreel_url: z.union([url, z.literal("")]),

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { EmptyState } from "@/components/empty-state";
 import { CATEGORIES, SCORES, SCORE_LABEL, STATUSES, STATUS_LABEL } from "@/lib/labels";
-import { createSupabaseServer } from "@/lib/supabase/server";
+import { db } from "@/server/db";
 import { leadsQuery, parseLeadFilters, type LeadRow } from "@/server/leadsQuery";
 import { LeadsTable } from "./leads-table";
 
@@ -9,7 +9,7 @@ const PAGE_SIZE = 25;
 
 export default async function LeadsPage({ searchParams }: PageProps<"/leads">) {
   const filters = parseLeadFilters(await searchParams);
-  const supabase = await createSupabaseServer();
+  const supabase = db();
 
   const from = (filters.page - 1) * PAGE_SIZE;
   const [{ data, count, error }, { data: campaignRows }] = await Promise.all([
