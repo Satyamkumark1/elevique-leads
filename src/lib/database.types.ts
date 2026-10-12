@@ -129,6 +129,7 @@ export type Database = {
         Row: {
           ad_id: string | null
           ad_name: string | null
+          ai_reason: string | null
           ai_status: string
           ai_summary: string | null
           automation_paused: boolean
@@ -165,6 +166,7 @@ export type Database = {
         Insert: {
           ad_id?: string | null
           ad_name?: string | null
+          ai_reason?: string | null
           ai_status?: string
           ai_summary?: string | null
           automation_paused?: boolean
@@ -201,6 +203,7 @@ export type Database = {
         Update: {
           ad_id?: string | null
           ad_name?: string | null
+          ai_reason?: string | null
           ai_status?: string
           ai_summary?: string | null
           automation_paused?: boolean
