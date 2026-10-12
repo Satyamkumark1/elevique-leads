@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { Sidebar } from "@/components/sidebar";
+import { Toaster } from "@/components/toaster";
 import { TopBar } from "@/components/top-bar";
 import { createSupabaseServer } from "@/lib/supabase/server";
 
@@ -25,6 +26,7 @@ export default async function DashboardLayout({ children }: LayoutProps<"/">) {
         <TopBar email={user.email ?? ""} lastWebhookAt={lastWebhook?.created_at ?? null} />
         <main className="mx-auto w-full max-w-[1440px] flex-1 p-4 pb-24 md:p-6">{children}</main>
       </div>
+      <Toaster />
     </div>
   );
 }
