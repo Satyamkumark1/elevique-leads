@@ -27,6 +27,12 @@ jobs:
           if grep -rnoE 'NEXT_PUBLIC_[A-Z_]+' src .env.example | grep -vE 'NEXT_PUBLIC_SUPABASE_(URL|ANON_KEY)$'; then
             echo "Unexpected NEXT_PUBLIC_ variable"; exit 1
           fi
+          for f in $(grep -rlE 'getEnv\(|db\(\)' src/server); do
+            grep -q '"server-only"' "$f" || { echo "$f reads secrets without import 'server-only'"; exit 1; }
+          done
+          if grep -rlE '@/server/(db|env)' src/components src/lib; then
+            echo "Client-reachable code imports server secrets"; exit 1
+          fi
 
       - run: pnpm lint
       - run: pnpm typecheck

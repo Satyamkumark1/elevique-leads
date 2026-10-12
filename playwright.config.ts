@@ -7,6 +7,7 @@ export default defineConfig({
   fullyParallel: false,
   workers: 1, // tests share one seeded DB
   retries: process.env.CI ? 1 : 0,
+  expect: { timeout: 10_000 }, // dev server compiles routes on first visit
   use: { baseURL: "http://localhost:3000", trace: "retain-on-failure" },
   projects: [
     { name: "login", testMatch: /auth\.spec\.ts/, use: { ...devices["Desktop Chrome"] } },
