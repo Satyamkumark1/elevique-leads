@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+### Phase 6 — Dashboard
+- Overview: 4 stat cards, leads/day line, leads by campaign, score split, needs-attention list, activity feed
+- Leads: URL filters (score, status, category, campaign, IST date range), search, 25/page, WhatsApp/email delivery icons, bulk status, CSV export (formula-safe), mobile card list
+- Lead detail: answers, AI summary + reason, contact + quick actions, ordered timeline (inbound highlighted), status, automation pause/resume, notes on blur, delete (cascade)
+- Follow-ups queue with cancel; Templates (WA texts, email preview + copy editor, sample reels add/reorder/delete); Integrations (health, test pings, webhook health, pending/dead jobs with retry); Settings (scoring rules, quiet hours, team allowlist)
+- Routes: `PATCH/DELETE /api/leads/[id]`, `GET /api/leads/export`, `POST /api/jobs/[id]/retry|cancel`, `POST /api/integrations/test`
+- Tests TC-I-31…35, TC-E-03…12; dev seed now includes messages, follow-ups, a dead job and a duplicate
+
 ### Phase 5 — Replies, opt-out, follow-ups
 - `/api/webhooks/whatsapp`: signature check; statuses only move forward (`failed` records the error); inbound → message row, lead `replied`, follow-ups cancelled, one owner alert per lead per day
 - Opt-out (STOP, unsubscribe, band karo, not interested, exact "no") → `opted_out` on every lead with that phone, all pending outbound jobs cancelled

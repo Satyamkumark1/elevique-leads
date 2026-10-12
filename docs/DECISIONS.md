@@ -28,3 +28,8 @@
 | 2026-10-12 | Inbound replies/opt-outs apply to every lead with that phone (originals and duplicates) | "Never message again" must hold even if the reply matches the duplicate row |
 | 2026-10-12 | Reply alerts: at most one per lead per IST day (`owner_alert:reply:<lead>:<date>`) | A chatty lead shouldn't flood the owner; the dashboard "Needs attention" list covers the rest |
 | 2026-10-12 | WhatsApp webhook events store counts only, not the raw payload | Raw payload holds phone numbers and message text; message text already lives in `messages` |
+| 2026-10-12 | Lead detail opens as a full page on all sizes (not a right-side sheet on desktop) | Same URL works everywhere, deep-linkable from alerts; sheet adds intercepting-route complexity for little gain |
+| 2026-10-12 | Score split drawn as three labelled bars, not one stacked bar | UI_SPEC hot/warm tokens fail the adjacent-colour check (ΔE 12.8 < 15); labels carry identity |
+| 2026-10-12 | "Needs your attention" = leads still in `replied` status | Team replies happen in the WhatsApp app, outside the system; moving the status is the "handled" signal |
+| 2026-10-12 | WhatsApp template approval status not fetched (no WABA ID in env); Templates page links to WhatsApp Manager | Rejected templates surface as dead jobs on Integrations |
+| 2026-10-12 | Owner alert number stays an env var (read-only in Settings) | One source; changing it is rare and should be deliberate |

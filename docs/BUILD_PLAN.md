@@ -103,11 +103,11 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 **Build** — per `UI_SPEC.md`: Overview, Leads table, Lead detail, Follow-ups, Templates, Integrations, Settings, CSV export, job retry.
 
 **Definition of Done**
-- [ ] E2E tests TC-E-01…E-12 pass
+- [x] E2E tests TC-E-01…E-12 pass
 - [ ] Lighthouse (desktop) performance ≥ 85, accessibility ≥ 90 on Overview and Leads
-- [ ] Lead list usable on a 375 px wide screen
-- [ ] Status change in dashboard updates the Sheet row
-- [ ] Dead job can be retried from Integrations page
+- [x] Lead list usable on a 375 px wide screen (TC-E-12)
+- [x] Status change in dashboard updates the Sheet row (TC-I-31, Sheets mocked; live check with Phase 0)
+- [x] Dead job can be retried from Integrations page (TC-E-11)
 
 ## Phase 7 — Hardening + launch (Day 15)
 
