@@ -77,7 +77,7 @@ function MessageItem({ m }: { m: Extract<TimelineItem, { kind: "message" }> }) {
           </span>
         </p>
         {m.body && <p className="mt-1 break-words whitespace-pre-wrap">{m.body}</p>}
-        {m.error && <p className="mt-1 text-xs text-error">{m.error}</p>}
+        {m.error && <p className="mt-1 text-xs text-error-fg">{m.error}</p>}
       </div>
     </>
   );

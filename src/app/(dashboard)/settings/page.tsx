@@ -117,7 +117,7 @@ export default async function SettingsPage() {
                   <button
                     type="submit"
                     aria-label={`Remove ${email}`}
-                    className="text-xs text-error hover:underline"
+                    className="text-xs text-error-fg hover:underline"
                   >
                     Remove
                   </button>

@@ -8,7 +8,7 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
         <h1 className="font-serif text-[28px] leading-tight">Elevique Leads</h1>
         <p className="mt-1 text-text-muted">Sign in with your team email.</p>
         {error === "link" && (
-          <p role="alert" className="mt-4 text-error">
+          <p role="alert" className="mt-4 text-error-fg">
             That sign-in link is invalid or expired. Request a new one.
           </p>
         )}

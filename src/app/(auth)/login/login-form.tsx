@@ -34,12 +34,12 @@ export function LoginForm() {
         {pending ? "Sending…" : "Send sign-in link"}
       </button>
       {state.status === "not_authorised" && (
-        <p role="alert" className="text-error">
+        <p role="alert" className="text-error-fg">
           Not authorised. This email is not on the team list.
         </p>
       )}
       {state.status === "error" && (
-        <p role="alert" className="text-error">
+        <p role="alert" className="text-error-fg">
           {state.message}
         </p>
       )}

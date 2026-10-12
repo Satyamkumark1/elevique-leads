@@ -30,7 +30,7 @@ export function Toaster() {
         <div
           key={t.id}
           role="status"
-          className={`rounded-md border bg-surface px-4 py-3 text-sm ${t.error ? "border-error text-error" : ""}`}
+          className={`rounded-md border bg-surface px-4 py-3 text-sm ${t.error ? "border-error text-error-fg" : ""}`}
         >
           {t.text}
         </div>

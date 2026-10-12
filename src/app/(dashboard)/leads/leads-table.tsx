@@ -97,6 +97,7 @@ export function LeadsTable({ leads, msgState, exportQuery, total }: Props) {
               <th className="w-10 px-4 py-2">
                 <input
                   type="checkbox"
+                  className="size-5"
                   aria-label="Select all leads on this page"
                   checked={allSelected}
                   onChange={() => setSelected(allSelected ? new Set() : new Set(leads.map((l) => l.id)))}
@@ -130,6 +131,7 @@ export function LeadsTable({ leads, msgState, exportQuery, total }: Props) {
                 <td className="px-4 py-2.5" onClick={(e) => e.stopPropagation()}>
                   <input
                     type="checkbox"
+                    className="size-5"
                     aria-label={`Select ${l.full_name ?? "lead"}`}
                     checked={selected.has(l.id)}
                     onChange={() => toggle(l.id)}
@@ -138,7 +140,7 @@ export function LeadsTable({ leads, msgState, exportQuery, total }: Props) {
                 <td className="px-3 py-2.5">
                   <Link
                     href={`/leads/${l.id}`}
-                    className="font-medium hover:underline"
+                    className="inline-block py-1 font-medium hover:underline"
                     onClick={(e) => e.stopPropagation()}
                   >
                     {l.full_name ?? "Unnamed"}
@@ -178,7 +180,7 @@ export function LeadsTable({ leads, msgState, exportQuery, total }: Props) {
           <li key={l.id} className="flex items-start gap-3 px-4 py-3">
             <input
               type="checkbox"
-              className="mt-1"
+              className="mt-0.5 size-5"
               aria-label={`Select ${l.full_name ?? "lead"}`}
               checked={selected.has(l.id)}
               onChange={() => toggle(l.id)}
@@ -212,7 +214,7 @@ function DuplicateTag({ originalId }: { originalId: string }) {
     <Link
       href={`/leads/${originalId}`}
       onClick={(e) => e.stopPropagation()}
-      className="ml-2 rounded-md bg-surface-2 px-1.5 py-0.5 text-xs text-text-muted hover:text-text"
+      className="ml-2 inline-block rounded-md bg-surface-2 px-1.5 py-1.5 text-xs text-text-muted hover:text-text"
     >
       Duplicate
     </Link>

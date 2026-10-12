@@ -65,7 +65,7 @@ export default async function TemplatesPage() {
             Welcome email
           </h2>
           {incomplete && (
-            <p role="alert" className="mt-2 text-error">
+            <p role="alert" className="mt-2 text-error-fg">
               Fill in all fields below. Until then welcome emails are not sent (jobs show as failed).
             </p>
           )}

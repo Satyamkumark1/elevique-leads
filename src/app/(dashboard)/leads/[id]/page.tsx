@@ -146,7 +146,7 @@ export default async function LeadDetailPage({ params }: PageProps<"/leads/[id]"
           <dl className="mt-3 space-y-2">
             <div className="flex justify-between gap-4">
               <dt className="text-text-muted">Phone</dt>
-              <dd>{lead.phone_e164 ?? <span className="text-error">Invalid or missing</span>}</dd>
+              <dd>{lead.phone_e164 ?? <span className="text-error-fg">Invalid or missing</span>}</dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-text-muted">Email</dt>

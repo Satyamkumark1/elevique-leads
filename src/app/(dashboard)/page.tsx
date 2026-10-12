@@ -96,7 +96,7 @@ export default async function OverviewPage() {
             <ul className="divide-y">
               {attention!.map((l) => (
                 <li key={l.id} className="flex items-center justify-between gap-3 py-2.5">
-                  <Link href={`/leads/${l.id}`} className="min-w-0 hover:underline">
+                  <Link href={`/leads/${l.id}`} className="min-w-0 py-1 hover:underline">
                     <span className="block truncate font-medium">{l.full_name ?? "Unnamed"}</span>
                     <span className="block truncate text-xs text-text-muted">
                       {l.brand_name ?? "—"} · {l.last_reply_at ? <Time value={l.last_reply_at} /> : "replied"}

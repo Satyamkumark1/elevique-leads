@@ -156,7 +156,7 @@ export function LeadActions({ id, phone, email, bookingUrl, name }: ActionsProps
       >
         <Copy size={14} aria-hidden /> Copy booking link
       </button>
-      <button type="button" className={`${action} text-error`} onClick={() => dialog.current?.showModal()}>
+      <button type="button" className={`${action} text-error-fg`} onClick={() => dialog.current?.showModal()}>
         <Trash2 size={14} aria-hidden /> Delete lead
       </button>
 
@@ -176,7 +176,7 @@ export function LeadActions({ id, phone, email, bookingUrl, name }: ActionsProps
           <button type="button" className={action} onClick={() => dialog.current?.close()}>
             Cancel
           </button>
-          <button type="button" className={`${action} border-error text-error`} onClick={remove}>
+          <button type="button" className={`${action} border-error text-error-fg`} onClick={remove}>
             Delete permanently
           </button>
         </div>

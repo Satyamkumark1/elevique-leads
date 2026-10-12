@@ -28,7 +28,7 @@ export function TestButton({ integration, label }: { integration: string; label:
       {state.detail && (
         <span
           role="status"
-          className={`flex items-center gap-1 text-xs ${state.ok ? "text-success" : "text-error"}`}
+          className={`flex items-center gap-1 text-xs ${state.ok ? "text-success" : "text-error-fg"}`}
         >
           {state.ok ? <Check size={12} aria-hidden /> : <X size={12} aria-hidden />} {state.detail}
         </span>

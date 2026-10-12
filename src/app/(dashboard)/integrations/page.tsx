@@ -123,7 +123,7 @@ export default async function IntegrationsPage({ searchParams }: PageProps<"/int
                 {dead > 0 ? (
                   <Link
                     href="/integrations?tab=dead"
-                    className="rounded-md bg-error/15 px-2 py-0.5 text-xs text-error"
+                    className="rounded-md bg-error/15 px-2 py-0.5 text-xs text-error-fg"
                   >
                     {dead} failed
                   </Link>
@@ -213,7 +213,7 @@ export default async function IntegrationsPage({ searchParams }: PageProps<"/int
                     <td className="px-4 py-2.5">
                       {j.attempts}/{j.max_attempts}
                     </td>
-                    <td className="max-w-80 px-4 py-2.5 break-words text-error">{j.last_error ?? ""}</td>
+                    <td className="max-w-80 px-4 py-2.5 break-words text-error-fg">{j.last_error ?? ""}</td>
                     <td className="px-4 py-2.5 text-right">
                       {tab === "dead" && <JobButton id={j.id} action="retry" label={`Retry ${j.type}`} />}
                     </td>
