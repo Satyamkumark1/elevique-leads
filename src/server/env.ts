@@ -53,7 +53,7 @@ export function parseEnv(source: Record<string, string | undefined>): Env {
   return result.data;
 }
 
-let cached: Env | undefined;
+/** Parsed per call (cheap) so a changed kill switch or test override is never stale. */
 export function getEnv(): Env {
-  return (cached ??= parseEnv(process.env));
+  return parseEnv(process.env);
 }

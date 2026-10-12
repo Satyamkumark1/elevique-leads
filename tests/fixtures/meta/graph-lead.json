@@ -1,0 +1,20 @@
+{
+  "id": "LEADGEN_ID",
+  "created_time": "2026-10-12T10:00:00+0000",
+  "ad_id": "120000000000001",
+  "ad_name": "Diwali Fashion — Reel 1",
+  "campaign_id": "110000000000001",
+  "campaign_name": "Diwali Fashion",
+  "form_id": "130000000000001",
+  "field_data": [
+    { "name": "full_name", "values": ["Asha Verma"] },
+    { "name": "phone_number", "values": ["+91 98765-43210"] },
+    { "name": "email", "values": ["Asha@Example.com"] },
+    { "name": "brand_name", "values": ["Kesar Threads"] },
+    { "name": "brand_link", "values": ["https://instagram.com/kesarthreads"] },
+    { "name": "category", "values": ["Fashion"] },
+    { "name": "monthly_budget", "values": ["₹50k–1L"] },
+    { "name": "videos_per_month", "values": ["3–5"] },
+    { "name": "start_timeline", "values": ["This month"] }
+  ]
+}
