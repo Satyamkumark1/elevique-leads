@@ -345,7 +345,7 @@ export type Database = {
     }
     Functions: {
       claim_jobs: {
-        Args: { batch?: number }
+        Args: { batch?: number; only_types?: string[] }
         Returns: {
           attempts: number
           created_at: string
