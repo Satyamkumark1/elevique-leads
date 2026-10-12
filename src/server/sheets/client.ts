@@ -62,7 +62,7 @@ export function leadRow(l: SheetLead): string[] {
 // ponytail: per-instance token cache; fine for serverless (one token fetch per cold start / hour).
 let token: { value: string; expires: number } | undefined;
 
-async function accessToken(): Promise<string> {
+export async function googleAccessToken(): Promise<string> {
   if (token && token.expires > Date.now() + 60_000) return token.value;
   const env = getEnv();
   const now = Math.floor(Date.now() / 1000);
@@ -97,7 +97,7 @@ async function accessToken(): Promise<string> {
 async function sheets(path: string, init: RequestInit = {}) {
   const res = await fetch(`${SHEETS}/${getEnv().GOOGLE_SHEET_ID}${path}`, {
     ...init,
-    headers: { Authorization: `Bearer ${await accessToken()}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${await googleAccessToken()}`, "Content-Type": "application/json" },
     signal: AbortSignal.timeout(10_000),
   });
   if (!res.ok) {
