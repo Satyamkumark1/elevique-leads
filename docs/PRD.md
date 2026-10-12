@@ -132,7 +132,7 @@ Priority: **P0** = required for launch, **P1** = launch if time allows, **P2** =
 | ID | Requirement | Priority |
 |---|---|---|
 | FR-36 | Every downstream action (WhatsApp, email, sheet, AI, alert) runs as a job with status and attempts. | P0 |
-| FR-37 | Failed jobs retry with backoff (1 min, 5 min, 30 min); after 3 failures → `dead`, visible in dashboard. | P0 |
+| FR-37 | Failed jobs retry with backoff (+1 min, +5 min); the 3rd failure → `dead`, visible in dashboard. | P0 |
 | FR-38 | Manual "Retry" for dead jobs from the dashboard. | P0 |
 | FR-39 | Errors reported to Sentry with lead ID (no personal data in error messages). | P1 |
 

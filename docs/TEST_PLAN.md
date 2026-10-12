@@ -173,7 +173,7 @@ Run on Preview after phases 2–5, and on Production at launch.
 - [ ] All 4 WhatsApp templates approved
 - [ ] Email passes SPF/DKIM/DMARC
 - [ ] Meta webhook subscribed to the Page on the Production URL
-- [ ] `pg_cron` job active on Production; runner logs show runs every minute
+- [ ] `pg_cron` job active on Production; runner logs show runs every 5 minutes
 - [ ] Sentry receives a test error; no PII in it
 - [ ] RLS verified with anon key (TC-I-33 on Production)
 - [ ] Kill switch tested

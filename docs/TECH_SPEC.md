@@ -34,7 +34,7 @@ Meta Lead Ad form
       │                                    sync_sheet, score_lead
       ▼                                         │
  (after() / waitUntil runs                      ▼
-  the job runner once)               /api/jobs/run  ◄── pg_cron every 1 min (pg_net)
+  the job runner once)               /api/jobs/run  ◄── pg_cron every 5 min (pg_net)
                                                 │
                      ┌──────────────┬───────────┼──────────────┬──────────────┐
                      ▼              ▼           ▼              ▼              ▼
@@ -49,7 +49,7 @@ Meta Lead Ad form
 
 1. **Jobs table as the backbone.** Every side effect is a row in `jobs`. Webhooks only write data and enqueue jobs. This gives retries, visibility and idempotency without an external queue.
 2. **Fast acknowledge.** Webhook handlers verify, persist, enqueue, then return 200. Processing is kicked off with Next.js `after()` (or `waitUntil`) and also picked up by the cron runner as a safety net.
-3. **Scheduler = Supabase `pg_cron` + `pg_net`.** Calls `POST /api/jobs/run` every minute with a shared secret. Avoids Vercel Hobby cron limits.
+3. **Scheduler = Supabase `pg_cron` + `pg_net`.** Calls `POST /api/jobs/run` every 5 minutes with a shared secret. Avoids Vercel Hobby cron limits.
 4. **Follow-ups are just delayed jobs** (`run_at` in the future). Cancelling = setting status `cancelled`.
 5. **Idempotency keys.** `leads.leadgen_id` unique; `jobs.idempotency_key` unique (e.g. `send_whatsapp:welcome:<lead_id>`); `messages.provider_message_id` unique.
 6. **Server-only secrets.** Service-role key, Meta/WhatsApp/Resend/Groq/Google keys are used only in route handlers and server modules under `src/server/`.
@@ -266,7 +266,7 @@ $$;
 
 ### Cron
 ```sql
-select cron.schedule('run-jobs', '* * * * *', $$
+select cron.schedule('run-jobs', '*/5 * * * *', $$
   select net.http_post(
     url := '<APP_URL>/api/jobs/run',
     headers := jsonb_build_object('Authorization', 'Bearer <CRON_SECRET>', 'Content-Type','application/json'),
@@ -281,7 +281,7 @@ Store the URL and secret with Supabase Vault rather than hard-coding them.
 | Route | Method | Auth | Behaviour |
 |---|---|---|---|
 | `/api/webhooks/meta` | GET | `hub.verify_token` | Return `hub.challenge` if token matches, else 403 |
-| `/api/webhooks/meta` | POST | `X-Hub-Signature-256` | Verify HMAC on raw body → insert `events` → for each `leadgen` change: fetch lead, map, upsert lead, enqueue jobs → 200 |
+| `/api/webhooks/meta` | POST | `X-Hub-Signature-256` | Verify HMAC on raw body → insert `events` → for each `leadgen` change enqueue `fetch_lead` → 200; `after()` runs the runner |
 | `/api/webhooks/whatsapp` | GET | verify token | Same verification as Meta |
 | `/api/webhooks/whatsapp` | POST | signature | `statuses[]` → update `messages.status`; `messages[]` → insert inbound message, set lead `replied`, cancel follow-ups, enqueue `owner_alert`; opt-out keywords → `opted_out` |
 | `/api/webhooks/resend` | POST | Svix signature | Update email message status (v1.1) |
@@ -298,7 +298,7 @@ All handlers: Zod-validate input, return JSON `{ ok, error? }`, never leak stack
 ### 7.1 New Meta lead
 1. Verify signature on the **raw** request body (read with `req.text()` before JSON parse).
 2. Insert `events(type='webhook.meta', payload)`.
-3. For each `entry[].changes[]` where `field = 'leadgen'`:
+3. For each `entry[].changes[]` where `field = 'leadgen'`: enqueue `fetch_lead:<leadgen_id>`. The rest runs in the `fetch_lead` job (retried on Graph errors, TC-I-06):
    - `GET /{leadgen_id}?fields=created_time,field_data,ad_id,ad_name,campaign_id,campaign_name,form_id` with page token.
    - `mapFields()` → lead object (see PRD §8 field keys).
    - Normalise phone (`src/server/lib/phone.ts`): strip spaces/dashes, handle `0`/`91` prefixes, require 10 digits starting 6–9 → `+91…`.

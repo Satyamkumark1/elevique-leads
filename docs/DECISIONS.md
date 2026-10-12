@@ -11,3 +11,9 @@
 | 2026-10-12 | Next.js 16: `src/proxy.ts` (renamed middleware); `cacheComponents` off | Every page is per-user behind auth; caching adds Suspense ceremony for no gain |
 | 2026-10-12 | CI on Node 22 | Node 20 reached end of life in April 2026 |
 | 2026-10-12 | Local Supabase `[analytics]` disabled | Its log container fails under Colima; not used by the app |
+| 2026-10-12 | pg_cron runs the job runner every 5 min (FR-23) | Owner decision. `after()` still kicks the runner on each webhook, so first messages stay instant |
+| 2026-10-12 | Backoff: +1 min, +5 min, dead on 3rd failure (TECH_SPEC/TC-U-19); FR-37 updated | Owner decision |
+| 2026-10-12 | Lead fetch is a `fetch_lead` job, not inline in the webhook. The kill switch never blocks `fetch_lead` (ingest), only outbound/sequence jobs | Owner decision. Graph failures retry instead of losing leads (TC-I-06); webhook stays fast |
+| 2026-10-12 | Quiet hours built in Phase 5 (v1) | Owner decision |
+| 2026-10-12 | `claim_jobs(batch, only_types)` claims only job types the runner has handlers for | Lets handlers ship phase by phase without stubs marking real jobs `done` |
+| 2026-10-12 | Duplicate-phone leads (FR-07) get only `sync_sheet` (Sheet mirrors every submission), no messages/score/follow-ups | "Do not restart the sequence" |
