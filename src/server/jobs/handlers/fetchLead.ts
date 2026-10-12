@@ -54,25 +54,23 @@ export async function handleFetchLead(job: Job, now = new Date()): Promise<void>
   if (error) throw new Error(`lead read failed: ${error.code}`);
 
   if (inserted.length > 0) {
-    await client
-      .from("events")
-      .insert([
-        {
-          lead_id: lead.id,
-          type: "lead.created",
-          description: `Lead received from Meta form (rule score: ${lead.score})`,
-        },
-        ...(lead.duplicate_of
-          ? [
-              {
-                lead_id: lead.id,
-                type: "lead.duplicate",
-                description: "Same phone within 30 days; sequence not restarted",
-                payload: { original_id: lead.duplicate_of },
-              },
-            ]
-          : []),
-      ]);
+    await client.from("events").insert([
+      {
+        lead_id: lead.id,
+        type: "lead.created",
+        description: `Lead received from Meta form (rule score: ${lead.score})`,
+      },
+      ...(lead.duplicate_of
+        ? [
+            {
+              lead_id: lead.id,
+              type: "lead.duplicate",
+              description: "Same phone within 30 days; sequence not restarted",
+              payload: { original_id: lead.duplicate_of },
+            },
+          ]
+        : []),
+    ]);
     logger.info("lead.created", { lead_id: lead.id, job_id: job.id, duplicate: !!lead.duplicate_of });
   }
 
