@@ -33,7 +33,7 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - CI (GitHub Actions): lint, typecheck, unit tests on every PR.
 
 **Definition of Done**
-- [ ] `pnpm lint`, `pnpm typecheck`, `pnpm test` pass locally and in CI — local ✅; CI pending first push to GitHub
+- [x] `pnpm lint`, `pnpm typecheck`, `pnpm test` pass locally and in CI
 - [x] `supabase db reset` applies migrations + seed with no errors
 - [x] Allowlisted email can log in; other emails are rejected (E2E test)
 - [ ] Preview deploy on Vercel loads the dashboard shell — blocked on Phase 0.10 (Vercel + Supabase project)
@@ -49,11 +49,11 @@ Phase 0 is manual setup (owner). Phases 1–7 are for Claude Code.
 - Duplicate handling (leadgen_id + same phone within 30 days)
 
 **Definition of Done**
-- [ ] Unit tests for signature, mapping, phone, budget, rule scoring pass (TC-U-01…U-20)
-- [ ] Integration tests TC-I-01…I-08 pass
-- [ ] Meta "Lead Ads Testing Tool" lead appears in `leads` within 10 s on the Preview URL
-- [ ] Sending the same webhook twice creates one lead and one set of jobs
-- [ ] Webhook responds in < 2 s (check Vercel logs)
+- [x] Unit tests for signature, mapping, phone, budget, rule scoring pass (TC-U-01…U-20)
+- [x] Integration tests TC-I-01…I-08 pass
+- [ ] Meta "Lead Ads Testing Tool" lead appears in `leads` within 10 s on the Preview URL — needs Phase 0 (Meta app + Vercel preview)
+- [x] Sending the same webhook twice creates one lead and one set of jobs (TC-I-05)
+- [ ] Webhook responds in < 2 s (check Vercel logs) — locally ~35 ms; Vercel check needs preview deploy
 
 ## Phase 3 — Job runner + instant response (Day 5–7)
 

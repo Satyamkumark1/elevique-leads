@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+### Phase 2 — Lead capture
+- `/api/webhooks/meta` GET (verify token) + POST (raw-body HMAC → store event → enqueue `fetch_lead` → 200; `after()` kicks the runner) (FR-01…03, FR-09)
+- `fetch_lead` job: Graph fetch (version from env, Bearer token), field mapping, phone normalisation, budget parsing, rule score, idempotent upsert, duplicate-phone detection, sequence enqueue (FR-04…08, FR-18)
+- Runner core: `claim_jobs(batch, only_types)`, retry backoff (+1 min, +5 min, dead), permanent 4xx → dead, `job.dead` event
+- Kill switch: `AUTOMATION_ENABLED=false` still saves leads, queues no outbound jobs
+- Tests: TC-U-01…20, TC-I-01…08 (+ Graph 4xx and fast-ack cases); MSW mocks the Graph API
+
 ### Phase 1 — Foundation
 - Next.js 16 app (TypeScript strict, Tailwind v4, shadcn/ui tokens mapped to UI_SPEC, ESLint, Prettier, Vitest, Playwright)
 - `src/server/env.ts`: Zod-validated env, checked at boot via `instrumentation.ts` (TC-U-34)
